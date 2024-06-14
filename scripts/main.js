@@ -103,7 +103,7 @@ function playAudio() {
 
   // Crie uma nova fonte de áudio
   var source = document.createElement("source");
-  source.src = `../assets/pads/${padSelected}/${audioName}.mp3`;
+  source.src = `../change-pads/assets/pads/${padSelected}/${audioName}.mp3`;
   source.type = "audio/mpeg";
   audioElement.volume = 0;
 
