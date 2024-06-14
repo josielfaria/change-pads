@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono");
+:root {
+  --deg: 5deg;
+  --base: white ;
+  --second: #7e8bc6;
+  /* --trackball: var(--base); */
+  --trackball: #ffa54f ;
+  --range: 0%;
+  --bg: #10252f;
+}
+
+.volume {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.volume-title {
+  position: absolute;
+  font-family: "fangsong";
+  color: #ffa54f;
+  margin-top: -35px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.volume-label {
+  width: 50px;
+  height: 30px;
+  font-family: "fangsong";
+  color: #ffa54f;
+  margin-top: 0;
+  background: white;
+  border-radius: 1rem;
+  z-index: 10;
+  user-select: none;
+  font-family: fantasy;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 300px;
+  height: 30px;
+  position: relative;
+  background: transparent;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]:before {
+  position: absolute;
+  content: "";
+  width: var(--range);
+  height: 10px;
+  background: var(--second);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: var(--base);
+  height: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  border: none;
+  -webkit-appearance: none;
+  background-color: var(--trackball);
+  margin-top: -10px;
+  z-index: 99;
+  position: relative;
+  transition: 0.5s all ease;
+}
+
+#value {
+  left: var(--range);
+  top: 41%;
+  font-size: 14px;
+  color: var(--trackball);
+  transition: 0.5s color ease;
+}

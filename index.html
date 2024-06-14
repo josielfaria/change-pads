@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIDI Triggered Audio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #output {
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        button {
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>MIDI Triggered Audio</h1>
-    <div id="output">Waiting for MIDI input...</div>
-    <button id="clearLogButton">Clear Log</button>
-    <audio id="audio" src="your-audio-file.mp3"></audio>
-    <script>
-        // Check if the Web MIDI API is available
-        if (navigator.requestMIDIAccess) {
-            navigator.requestMIDIAccess()
-                .then(onMIDISuccess, onMIDIFailure);
-        } else {
-            document.getElementById('output').textContent = 'Web MIDI API is not supported in this browser.';
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/assets/imgs/favicon.png" />
+    <title>Worship Pad</title>
 
-        function onMIDISuccess(midiAccess) {
-            const inputs = midiAccess.inputs;
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/start.css" />
+    <link rel="stylesheet" href="styles/volume.css" />
+    <link rel="stylesheet" href="styles/notes.css" />
+    <link rel="stylesheet" href="styles/output.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-            // Listen for MIDI messages from all inputs
-            inputs.forEach(input => {
-                input.onmidimessage = handleMIDIMessage;
-            });
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </head>
+  <body class="background h-100">
+    <p class="credits">by Josiel Faria</p>
 
-            document.getElementById('output').textContent = 'MIDI devices found. Listening for input...';
-        }
+    <div class="container">
+      <div id="containerStart" class="m-auto d-flex justify-content-center align-items-center">
+        <button onclick="start()" type="button" class="btn btn-danger">Lets Worship</button>
+      </div>
 
-        function onMIDIFailure() {
-            document.getElementById('output').textContent = 'Failed to access MIDI devices.';
-        }
+      <div id="containerWorship" class="">
+        <div class="content-notes container text-center mt-5 d-flex justify-content-center">
+          <div class="card note-select me-3">
+            <p class="mt-2 text-select">Escolhendo</p>
+            <p id="noteView" class="note 2">C</p>
+          </div>
 
-        function handleMIDIMessage(event) {
-            const data = event.data;
-            const command = data[0];
-            const note = data[1];
-            const velocity = data[2];
+          <div class="card note-selected">
+            <p class="mt-2 text-selected">Tocando</p>
+            <p id="noteViewSelected" class="note">_</p>
+          </div>
+        </div>
 
-            // Log MIDI message data to the console
-            console.log('MIDI message received:', data);
-            console.log('Command:', command);
-            console.log('Note:', note);
-            console.log('Velocity:', velocity);
+        <div class="content-controls container text-center mt-5">
+          <div class="row">
+            <div class="col mt-sm-5 mt-md-0 mt-5">
+              <select id="selectPad" class="form-select" aria-label="Default select example">
+                <option disabled>Escolha um pad</option>
+                <option selected value="flanger">Flanger</option>
+                <option value="soft">Soft</option>
+                <option value="sinos">Sinos</option>
+              </select>
+            </div>
 
-            // Display MIDI message data on the web page
-            const output = document.getElementById('output');
-            output.innerHTML += `<p>Command: ${command}, Note: ${note}, Velocity: ${velocity}</p>`;
+            <div class="col mt-sm-5 mt-md-0 mt-5">
+              <div class="volume">
+                <input id="volumeInput" type="range" value="35" />
+                <span id="volumeTitle" class="volume-title">Volume</span>
+                <span id="volumeLabel" class="volume-label">Volume</span>
+              </div>
+            </div>
+            <div class="col mt-sm-5 mt-md-0 mt-5 gap-5">
+              <button type="button" class="btn btn-success" onclick="playAudio()"> Play </button>
+              <button type="button" class="btn btn-danger" onclick="stopAudioSmoothly()">Stop</button>
+            </div>
+          </div>
+        </div>
 
-            // Check for a specific note and velocity to trigger the audio
-            if (command === 144 && note === 48 && velocity > 0) { // 144 is the 'Note On' message
-                playAudio();
-            }
-        }
+        <div class="content-output mt-5">
+          <div id="output" class="p-2 ps-5">
+            <p id="output-info">Aperta o MIDI aí...</p>
+          </div>
+          <div class="d-grid mt-2 gap-2 d-md-flex justify-content-md-end">
+            <button id="clearLogButton" type="button" class="btn btn-secondary" onclick="clearLog()">Limpar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        function playAudio() {
-            const audio = document.getElementById('audio');
-            audio.play();
-        }
-
-        // Add event listener to the clear log button
-        document.getElementById('clearLogButton').addEventListener('click', function() {
-            document.getElementById('output').innerHTML = 'Log cleared. Waiting for MIDI input...';
-        });
-    </script>
-</body>
+    <audio id="audio"></audio>
+    <audio id="audioStart">
+      <source src="assets/audios/inpad.mp3" type="audio/mpeg" />
+    </audio>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/start.js"></script>
+    <script src="scripts/volume.js"></script>
+    <script src="scripts/select-pad.js"></script>
+  </body>
 </html>

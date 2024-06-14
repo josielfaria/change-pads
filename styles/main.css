@@ -1,0 +1,32 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.background {
+  background-image: url("../assets/imgs/background.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#containerStart {
+  height: 100vh;
+}
+
+#containerWorship {
+  display: none;
+}
+
+.credits {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  font-family: fantasy;
+  /* text-shadow: 1px 1px 1px #ffaa79d0; */
+  background: -webkit-linear-gradient(#ffffffd0, #ffaa79d0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

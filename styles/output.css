@@ -1,0 +1,10 @@
+#output {
+  height: 200px;
+  overflow: auto;
+  background: rgba(255, 255, 255, 0.33) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
