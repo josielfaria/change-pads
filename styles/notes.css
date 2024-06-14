@@ -35,3 +35,9 @@
   font-family: fantasy;
 }
 
+@media (max-width: 600px) {
+  .note-selected,
+  .note-select {
+    font-size: 6rem;
+  }
+}
