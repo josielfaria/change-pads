@@ -64,7 +64,6 @@ function handleMIDIMessage(event) {
   const data = event.data;
   const command = data[0];
   const note = data[1];
-  const noteTom = "C";
   const velocity = data[2];
 
   // Display MIDI message data on the web page
@@ -76,7 +75,7 @@ function handleMIDIMessage(event) {
   if (command === 144 && velocity > 0) {
     // Verificar qual a nota corresponde ao valor MIDI recebido
     audioName = midiParaNota(note);
-    noteView.innerHTML = audioName;
+    noteView.innerHTML = substituirSusPorHash(audioName);
   }
 
   // BTN PLAY
@@ -100,7 +99,7 @@ function playAudio() {
     return;
   }
 
-  noteViewSelected.innerHTML = audioName;
+  noteViewSelected.innerHTML = substituirSusPorHash(audioName);
 
   // Crie uma nova fonte de áudio
   var source = document.createElement("source");
@@ -124,7 +123,7 @@ function playAudio() {
   setTimeout(() => {
     audioElement.play().catch((error) => {
       console.error("error", error);
-      alert(`Azedou esse caminho: ../assets/pads/soft-pads/${audioName}.mp3`, error);
+      alert(`Azedou esse caminho: ../assets/pads/${padSelected}/${audioName}.mp3`, error);
     });
   }, 0);
 }
@@ -194,4 +193,8 @@ function stopAudio() {
 
 function clearLog() {
   document.getElementById("output").innerHTML = "Zero bala.. Pode tocar!";
+}
+
+function substituirSusPorHash(text) {
+  return text.replace(/sus/g, '#');
 }
