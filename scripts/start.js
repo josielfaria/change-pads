@@ -1,7 +1,8 @@
 function start() {
-  console.log("CHANIy");
+  console.log("Start");
   $("#containerStart").addClass("d-none");
-  audioStart.play();
+  initConnectKnobs();
+  audioStart.play(); // TODO: DEVOLVER QUANDO REMOVER O SETTIMEOUT
   setTimeout(() => {
     $("#containerWorship").addClass("d-block");
   }, 1000);
@@ -18,3 +19,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // Adiciona um listener ao documento para detectar a tecla pressionada
   document.addEventListener("keydown", verificarTecla);
 });
+
+// TODO: REMOVER DEPOIS
+// setTimeout(() => {
+//   start();
+// }, 1000);

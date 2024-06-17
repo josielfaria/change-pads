@@ -21,75 +21,7 @@ const notasMidi = {
   B: [11, 23, 35, 47, 59, 71, 83, 95, 107, 119],
 };
 
-// Função para converter código MIDI para nota
-function midiParaNota(codigoMidi) {
-  for (let nota in notasMidi) {
-    if (notasMidi[nota].includes(codigoMidi)) {
-      return nota;
-    }
-  }
-  return null; // Retorna null se o código MIDI não estiver associado a nenhuma nota
-}
-
-// Check if the Web MIDI API is available
-if (navigator.requestMIDIAccess) {
-  navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
-} else {
-  document.getElementById("output").textContent = "Web MIDI API is not supported in this browser.";
-}
-
-function onMIDISuccess(midiAccess) {
-  const inputs = midiAccess.inputs.values(); // Obtém um iterator dos valores do Map
-
-  // Itera sobre os valores do Map usando um loop for...of FIXME: PARA CARA DISPOSITIVO MIDI CONECTADO
-  // for (let input of inputs) {
-  //   console.log('inputs---', input  )
-  //   input.onmidimessage = handleMIDIMessage;
-  // }
-
-  for (let input of inputs) {
-    input.onmidimessage = handleMIDIMessage;
-    // Parar o loop na primeira iteração para pegar apenas o primeiro dispositivo MIDI
-    break;
-  }
-
-  document.getElementById("output-info").textContent = "Pressione uma tecla MIDI.";
-}
-
-function onMIDIFailure() {
-  document.getElementById("output").textContent = "Failed to access MIDI devices.";
-}
-
-function handleMIDIMessage(event) {
-  const data = event.data;
-  const command = data[0];
-  const note = data[1];
-  const velocity = data[2];
-
-  // Display MIDI message data on the web page
-  const output = document.getElementById("output");
-  output.innerHTML += `<p>Command: ${command}, Note: ${note}, Velocity: ${velocity}</p>`;
-  output.scrollTop = output.scrollHeight;
-
-  // Check for a specific note and velocity to trigger the audio
-  if (command === 144 && velocity > 0) {
-    // Verificar qual a nota corresponde ao valor MIDI recebido
-    audioName = midiParaNota(note);
-    noteView.innerHTML = substituirSusPorHash(audioName);
-  }
-
-  // BTN PLAY
-  if (command === 176 && note === 94) {
-    playAudio();
-  }
-
-  // BTN STOP
-  if (command === 176 && note === 93) {
-    stopAudioSmoothly();
-  }
-}
-
-function playAudio() {
+async function playAudio() {
   while (audioElement.firstChild) {
     audioElement.removeChild(audioElement.firstChild);
   }
@@ -103,29 +35,30 @@ function playAudio() {
 
   // Crie uma nova fonte de áudio
   var source = document.createElement("source");
-  source.src = `../change-pads/assets/pads/${padSelected}/${audioName}.mp3`;
+  source.src = `../assets/pads/${padSelected}/${audioName}.mp3`;
   source.type = "audio/mpeg";
-  audioElement.volume = 0;
+  source.volume = 0;
+  // audioElement.volume = 0;
 
   // Adicione a nova fonte ao elemento de áudio
   audioElement.appendChild(source);
 
+  console.log("playAudio -> audioElement", audioElement);
   // Carregue o novo áudio
-  audioElement.load();
-
-  // Comece com o volume em 0
-  const volumeControl = document.getElementById("volumeInput").value / 100;
-  increaseVolumeSmoothly(audioElement, volumeControl); // Aumente o volume gradualmente para 1
+  await audioElement.load();
 
   isPlaying = true;
   stopRequested = false;
 
-  setTimeout(() => {
-    audioElement.play().catch((error) => {
+  audioElement
+    .play()
+    .then((a) => {
+      increaseVolumeSmoothly(audioElement, VOLUME / 100); // Aumente o volume gradualmente para 1
+    })
+    .catch((error) => {
       console.error("error", error);
       alert(`Azedou esse caminho: ../assets/pads/${padSelected}/${audioName}.mp3`, error);
     });
-  }, 0);
 }
 
 function stopAudioSmoothly() {
@@ -133,7 +66,7 @@ function stopAudioSmoothly() {
     noteViewSelected.innerHTML = "";
     stopRequested = true;
     const fadeOutInterval = setInterval(function () {
-      const volume = audioElement.volume - 0.05;
+      const volume = audioElement.volume - 0.01;
       if (volume > 0) {
         audioElement.volume = volume.toFixed(2); // Limit to 2 decimal places
       } else {
@@ -151,7 +84,7 @@ function stopAudioSmoothlyChangeTone() {
   if (isPlaying && !stopRequested) {
     stopRequested = true;
     const fadeOutInterval = setInterval(function () {
-      const volume = audioElement.volume - 0.1;
+      const volume = audioElement.volume - 0.05;
       if (volume > 0) {
         audioElement.volume = volume.toFixed(2); // Limit to 2 decimal places
       } else {
@@ -175,9 +108,9 @@ function increaseVolumeSmoothly(audioElement, targetVolume) {
   }
 
   const fadeInInterval = setInterval(function () {
-    const volume = audioElement.volume + 0.02; // Aumenta o volume gradualmente
+    let volume = audioElement.volume + 0.02; // Aumenta o volume gradualmente
     if (volume < targetVolume) {
-      audioElement.volume = volume.toFixed(2); // Limita para 2 casas decimais
+      audioElement.volume = Number(volume.toFixed(2)); // Limita para 2 casas decimais
     } else {
       audioElement.volume = targetVolume; // Define o volume para o valor alvo exato
       clearInterval(fadeInInterval); // Limpa o intervalo de aumento de volume
@@ -196,5 +129,24 @@ function clearLog() {
 }
 
 function substituirSusPorHash(text) {
-  return text.replace(/sus/g, '#');
+  return text.replace(/sus/g, "#");
+}
+
+// METODOS AUXILIARES
+function convertRange(value, inMin, inMax, outMin, outMax) {
+  return outMin + ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
+}
+
+// Específico para converter -40 a 40 para -140 a 140
+function convertToDeg(value) {
+  return convertRange(value, -40, 40, -140, 140);
+}
+
+// Específico para converter -140e140 para -40 a 40
+function convertToGainMidi(value) {
+  return convertRange(value, 0, 127, -40, 40);
+}
+
+function convertVolToGainMidi(value) {
+  return convertRange(value, 0, 127, 0, 100);
 }
