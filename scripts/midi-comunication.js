@@ -8,7 +8,10 @@ function verificarMessageMidi(message) {
   const velocity = data[2];
 
   // Verificar qual a nota corresponde ao valor MIDI recebido
-  audioName = command === MIDI_COMMAND_NOTES_ON && midiParaNota(note);
+  if (command === MIDI_COMMAND_NOTES_ON) {
+    audioName = midiParaNota(note);
+  }
+
   if (audioName) {
     noteView.innerHTML = substituirSusPorHash(audioName);
   }

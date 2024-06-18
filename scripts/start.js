@@ -1,5 +1,4 @@
 function start() {
-  console.log("CHANIy");
   $("#containerStart").addClass("d-none");
   audioStart.play();
   setTimeout(() => {

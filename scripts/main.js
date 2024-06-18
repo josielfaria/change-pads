@@ -41,9 +41,6 @@ function playAudio() {
     return;
   }
 
-  if (audioName === null) {
-    return;
-  }
   noteViewSelected.innerHTML = substituirSusPorHash(audioName);
 
   // Crie uma nova fonte de áudio

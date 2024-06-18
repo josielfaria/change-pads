@@ -1,13 +1,6 @@
 const volumeControl = document.getElementById("volumeInput");
 const volumeLabel = document.getElementById("volumeLabel");
 const audioPlayer = document.getElementById("audio");
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const source = audioContext.createMediaElementSource(audioPlayer);
-const gainNode = audioContext.createGain();
-
-// Connect the audio graph
-source.connect(gainNode);
-gainNode.connect(audioContext.destination);
 
 document.addEventListener("DOMContentLoaded", function () {
   // Set the initial volume
