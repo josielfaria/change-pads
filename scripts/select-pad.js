@@ -1,7 +1,7 @@
+const selectElement = document.getElementById("selectPad");
 let padSelected = "flanger";
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  const selectElement = document.getElementById("selectPad");
 
   // Defina uma variável para armazenar o valor selecionado
   padSelected = selectElement.value;

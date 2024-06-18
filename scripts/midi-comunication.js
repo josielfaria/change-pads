@@ -1,5 +1,6 @@
 const MIDI_COMMAND_OPTIONS = 176;
 const MIDI_COMMAND_NOTES_ON = 144;
+const MIDI_COMMAND_PADS_ON = 153;
 
 function verificarMessageMidi(message) {
   const data = message.data;
@@ -26,6 +27,24 @@ function verificarMessageMidi(message) {
   // BTN VOL
   if (command === MIDI_COMMAND_OPTIONS && note === 20) {
     setVolume(((velocity * 100) / 127).toFixed(0));
+  }
+
+  choosePad(command, note);
+}
+
+function choosePad(command, note) {
+  if (command !== MIDI_COMMAND_PADS_ON) {
+    return;
+  }
+  if (note === 40) {
+    padSelected = "flanger";
+    selectElement.value = "flanger";
+  } else if (note === 41) {
+    padSelected = "soft";
+    selectElement.value = "soft";
+  } else if (note === 42) {
+    padSelected = "sinos";
+    selectElement.value = "sinos";
   }
 }
 
