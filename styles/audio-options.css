@@ -1,0 +1,17 @@
+.audio-in {
+  position: fixed !important;
+  bottom: 0;
+  right: 5px;
+}
+.audio-in .text {
+  color: rgb(99 99 99);
+}
+
+.form-check-input:checked {
+  background-color: rgb(99 99 99) !important;
+  border-color: rgb(146, 146, 146) !important;
+}
+
+.form-check-input {
+  background-color: #fff0 !important;
+}

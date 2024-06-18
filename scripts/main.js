@@ -144,3 +144,22 @@ function substituirSusPorHash(text) {
 function substituirHashPorSus(text) {
   return text.replace(/#/g, "sus");
 }
+
+// CONFIGURAÇÂO AUDIO GERAL
+const muteAudioChecked = document.getElementById("muteAudioChecked");
+
+muteAudioChecked.addEventListener("change", function () {
+  if (this.checked) {
+    audioStart.volume = 0;
+    setStorage("muteAudio", true);
+    muteAudioChecked.checked = true;
+  } else {
+    audioStart.volume = 1;
+    setStorage("muteAudio", false);
+    muteAudioChecked.checked = false;
+  }
+});
+
+var muteAudioCheckedStorage = localStorage.getItem("muteAudio") === "true";
+muteAudioChecked.checked = muteAudioCheckedStorage;
+audioStart.volume = muteAudioCheckedStorage ? 0 : 1;

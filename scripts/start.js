@@ -1,5 +1,6 @@
 function start() {
   $("#containerStart").addClass("d-none");
+  $("#audioStartControl").addClass("d-none");
   audioStart.play();
   setTimeout(() => {
     $("#containerWorship").addClass("d-block");
