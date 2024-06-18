@@ -1,9 +1,12 @@
+let START_WORSHIP = false;
+
 function start() {
   $("#containerStart").addClass("d-none");
   $("#audioStartControl").addClass("d-none");
   audioStart.play();
   setTimeout(() => {
     $("#containerWorship").addClass("d-block");
+    START_WORSHIP = true;
   }, 1000);
 }
 
@@ -12,9 +15,21 @@ function verificarTecla(event) {
   if (event.keyCode === 13 || event.keyCode === 32) {
     start();
   }
+
+  // Verifica se a tecla pressionada é Esc (código 27)
+  if (event.keyCode === 27) {
+    tudumtss();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
   // Adiciona um listener ao documento para detectar a tecla pressionada
   document.addEventListener("keydown", verificarTecla);
 });
+
+// TUDUMTSS
+function tudumtss() {
+  const audioExtra = new Audio("assets/audios/tudumtss.wav");
+  audioExtra.volume = 1;
+  audioExtra.play();
+}
