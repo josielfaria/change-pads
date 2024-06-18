@@ -1,31 +1,39 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const audioPlayer = document.getElementById("audio");
-  const volumeControl = document.getElementById("volumeInput");
+const volumeControl = document.getElementById("volumeInput");
+const volumeLabel = document.getElementById("volumeLabel");
+const audioPlayer = document.getElementById("audio");
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const source = audioContext.createMediaElementSource(audioPlayer);
+const gainNode = audioContext.createGain();
 
+// Connect the audio graph
+source.connect(gainNode);
+gainNode.connect(audioContext.destination);
+
+document.addEventListener("DOMContentLoaded", function () {
   // Set the initial volume
-  audioPlayer.volume = volumeControl.value / 100;
+  audioPlayer.volume = getVolumeStorage() / 100;
+  volumeLabel.textContent = getVolumeStorage();
+  volumeControl.value = getVolumeStorage();
+  setKnobMidiVolume(getVolumeStorage());
 
-  // Event listener for volume change
+  // adicionar debounceTimer para evitar que o volume seja alterado muitas vezes
+  let debounceTimer;
   volumeControl.addEventListener("input", function () {
-    audioPlayer.volume = this.value / 100;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      setVolume(this.value);
+    }, 1000);
   });
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-  const volumeControl = document.getElementById("volumeInput");
-  const volumeLabel = document.getElementById("volumeLabel");
-
-  volumeLabel.textContent = volumeControl.value;
-
-  volumeControl.addEventListener("input", function () {
-    volumeLabel.textContent = this.value;
-  });
-});
-
 
 document.getElementById("volumeLabel").addEventListener("click", function () {
-  const volumeControl = document.getElementById("volumeInput");
-  const volumeLabel = document.getElementById("volumeLabel");
-  volumeLabel.textContent = 100;
-  volumeControl.value = 100;
+  setVolume(100);
 });
+
+function setVolume(volume) {
+  audioPlayer.volume = volume / 100;
+  volumeLabel.textContent = volume;
+  volumeControl.value = volume;
+  setKnobMidiVolume(volume);
+  setVolumeStorage(volume);
+}
