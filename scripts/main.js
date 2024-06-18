@@ -93,7 +93,7 @@ function stopAudioSmoothlyChangeTone() {
   if (isPlaying && !stopRequested) {
     stopRequested = true;
     const fadeOutInterval = setInterval(function () {
-      const volume = audioElement.volume - 0.1;
+      const volume = audioElement.volume - 0.05;
       if (volume > 0) {
         audioElement.volume = volume.toFixed(2); // Limit to 2 decimal places
       } else {
@@ -139,4 +139,8 @@ function clearLog() {
 
 function substituirSusPorHash(text) {
   return text.replace(/sus/g, "#");
+}
+
+function substituirHashPorSus(text) {
+  return text.replace(/#/g, "sus");
 }

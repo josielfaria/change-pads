@@ -9,10 +9,7 @@ function verificarMessageMidi(message) {
 
   // Verificar qual a nota corresponde ao valor MIDI recebido
   if (command === MIDI_COMMAND_NOTES_ON) {
-    audioName = midiParaNota(note);
-  }
-
-  if (audioName) {
+    audioName = substituirHashPorSus(midiParaNota(note));
     noteView.innerHTML = substituirSusPorHash(audioName);
   }
 
