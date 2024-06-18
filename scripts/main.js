@@ -45,7 +45,7 @@ function playAudio() {
 
   // Crie uma nova fonte de áudio
   var source = document.createElement("source");
-  source.src = `../assets/pads/${padSelected}/${audioName}.mp3`;
+  source.src = `../${document.baseURI}assets/pads/${padSelected}/${audioName}.mp3`;
   source.type = "audio/mpeg";
   audioElement.volume = 0;
 
@@ -65,7 +65,7 @@ function playAudio() {
   setTimeout(() => {
     audioElement.play().catch((error) => {
       console.error("error", error);
-      alert(`Azedou esse caminho: ../assets/pads/${padSelected}/${audioName}.mp3`, error);
+      alert(`Azedou esse caminho: ../${document.baseURI}assets/pads/${padSelected}/${audioName}.mp3`, error);
     });
   }, 0);
 }
