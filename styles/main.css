@@ -30,3 +30,23 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.content-led-connection {
+  color: white;
+}
+
+.led-connection {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 2rem;
+}
+
+.led-connection.on {
+  background-color: rgb(60, 255, 0);
+  border: 2px solid rgb(209, 255, 195);
+}
+.led-connection.off {
+  background-color: rgb(255, 17, 0);
+  border: 2px solid #fc7b7b;
+}

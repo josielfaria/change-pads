@@ -1,4 +1,5 @@
 let deviceMidi = null;
+let deviceMidiConnected = false;
 
 // Check if the Web MIDI API is available
 if (navigator.requestMIDIAccess) {
@@ -15,6 +16,15 @@ function onMIDISuccess(midiAccess) {
     input.onmidimessage = handleMIDIMessage;
     break;
   }
+
+  // verificar se o device midi está desconectado
+  midiAccess.onstatechange = function (event) {
+    if (event.port.state === "disconnected") {
+      deviceMidiConnected = false;
+    } else {
+      deviceMidiConnected = true;
+    }
+  };
 
   for (let output of outputs) {
     deviceMidi = output;
@@ -55,3 +65,19 @@ function printMidiOutput(message) {
   output.innerHTML += `<p>Command: ${command}, Note: ${note}, Velocity: ${velocity}</p>`;
   output.scrollTop = output.scrollHeight;
 }
+
+// SHOW LED MIDI CONNECTION
+const ledConnection = document.getElementById("led-connection");
+const ledLabel = document.getElementById("led-label");
+
+function setStyleLedConnection(status) {
+  console.log('status', status)
+  ledConnection.classList.add(status ? "on" : "off");
+  ledConnection.classList.remove(status ? "off" : "on");
+  ledLabel.textContent = status ? "MIDI Conectado" : "MIDI Desconectado";
+}
+
+// verificar se existe device midi conectado a cada 1 segundo
+setInterval(() => {
+  setStyleLedConnection(deviceMidiConnected);
+}, 1000);
