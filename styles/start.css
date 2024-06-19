@@ -1,2 +1,42 @@
+.button {
+  border-radius: 0.5rem;
+  border: 2px solid;
+  background: linear-gradient(160deg, #e13c3ccc, #ffdc74ad);
+  color: #ffe0af;
+  font-family: cursive;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.btn-start {
+  width: 170px;
+  height: 70px;
+  background: linear-gradient(160deg, #7d1818f0, #ffdc74ad);
+}
 
+.btn-start:hover {
+  background: linear-gradient(160deg, #ffdc74ad, #e13c3ccc);
+}
+
+.btn-play {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(160deg, #7cbb69c2, #61a74cad);
+}
+
+.btn-play:hover {
+  background: linear-gradient(160deg, #61a74cad, #7cbb69c2);
+}
+
+.btn-stop {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(160deg, #e25757cc, #e13c3ccc);
+}
+
+.btn-stop:hover {
+  background: linear-gradient(160deg, #e13c3ccc, #e25757cc);
+}

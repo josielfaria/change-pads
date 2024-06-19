@@ -1,3 +1,9 @@
+.note,
+.text-select,
+.text-selected {
+  text-shadow: 3px 3px 5px rgb(79 79 79);
+}
+
 .note-selected,
 .note-select {
   /* background-color: #f0f0f0; */
