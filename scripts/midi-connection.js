@@ -71,7 +71,6 @@ const ledConnection = document.getElementById("led-connection");
 const ledLabel = document.getElementById("led-label");
 
 function setStyleLedConnection(status) {
-  console.log('status', status)
   ledConnection.classList.add(status ? "on" : "off");
   ledConnection.classList.remove(status ? "off" : "on");
   ledLabel.textContent = status ? "MIDI Conectado" : "MIDI Desconectado";
