@@ -1,11 +1,14 @@
 let deviceMidi = null;
 let deviceMidiConnected = false;
 
-// Check if the Web MIDI API is available
-if (navigator.requestMIDIAccess) {
-  navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
-} else {
-  document.getElementById("output").textContent = "Web MIDI API is not supported in this browser.";
+initWebMidiSupport();
+
+function initWebMidiSupport() {
+  if (navigator.requestMIDIAccess) {
+    navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+  } else {
+    document.getElementById("output").textContent = "Web MIDI API is not supported in this browser.";
+  }
 }
 
 function onMIDISuccess(midiAccess) {
@@ -23,6 +26,11 @@ function onMIDISuccess(midiAccess) {
       deviceMidiConnected = false;
     } else {
       deviceMidiConnected = true;
+      const inputs = midiAccess.inputs.values();
+      for (let input of inputs) {
+        input.onmidimessage = handleMIDIMessage;
+        break;
+      }
     }
   };
 

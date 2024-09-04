@@ -4,7 +4,9 @@ const MIDI_COMMAND_PADS_ON = 153;
 const MIDI_COMMAND_PADS_TOGGLE = 185;
 
 function verificarMessageMidi(message) {
-  if (!START_WORSHIP) { return; }
+  if (!START_WORSHIP) {
+    return;
+  }
 
   const data = message.data;
   const command = data[0];
@@ -32,6 +34,11 @@ function verificarMessageMidi(message) {
   // BTN VOL
   if (command === MIDI_COMMAND_OPTIONS && note === 20) {
     setVolume(((velocity * 100) / 127).toFixed(0));
+    return;
+  }
+
+  if (command === MIDI_COMMAND_OPTIONS && note === 95) {
+    clearLog();
     return;
   }
 
