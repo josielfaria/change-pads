@@ -33,3 +33,15 @@ function tudumtss() {
   audioExtra.volume = 1;
   audioExtra.play();
 }
+
+// PSICOLOGICO
+function psicologico() {
+  const audioExtra = new Audio("assets/audios/psicologico.mp3");
+  audioExtra.volume = 1;
+  audioExtra.play();
+}
+
+
+// TODO: Botão panico
+// TODO: Set list com TOMS do dia 
+// TODO: Botão para mudar os toms do dia

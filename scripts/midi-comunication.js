@@ -1,6 +1,6 @@
 const MIDI_COMMAND_OPTIONS = 176;
 const MIDI_COMMAND_NOTES_ON = 144;
-const MIDI_COMMAND_PADS_ON = 153;
+const MIDI_COMMAND_PADS_ON_LN = 153;
 const MIDI_COMMAND_PADS_TOGGLE = 185;
 
 function verificarMessageMidi(message) {
@@ -31,6 +31,22 @@ function verificarMessageMidi(message) {
     return;
   }
 
+  // BTN PLAY/STOP PAD TOGGLE
+  if (command === MIDI_COMMAND_PADS_TOGGLE && note === 36) {
+    if (velocity === 127) {
+      playAudio();
+    } else {
+      stopAudioSmoothly();
+    }
+    return;
+  }
+
+  // BTN CHANGE PAD
+  if (command === MIDI_COMMAND_PADS_ON_LN && note === 37) {
+    playAudio();
+    return;
+  }
+
   // BTN VOL
   if (command === MIDI_COMMAND_OPTIONS && note === 20) {
     setVolume(((velocity * 100) / 127).toFixed(0));
@@ -44,13 +60,17 @@ function verificarMessageMidi(message) {
 
   choosePad(command, note);
 
-  if (command === MIDI_COMMAND_PADS_TOGGLE && note === 39 && velocity === 127) {
+  if (command === MIDI_COMMAND_PADS_ON_LN && note === 39) {
     tudumtss();
+  }
+
+  if (command === MIDI_COMMAND_PADS_ON_LN && note === 0) {
+    psicologico();
   }
 }
 
 function choosePad(command, note) {
-  if (command !== MIDI_COMMAND_PADS_ON) {
+  if (command !== MIDI_COMMAND_PADS_ON_LN) {
     return;
   }
   if (note === 40) {
