@@ -74,12 +74,15 @@ function choosePad(command, note) {
     return;
   }
   if (note === 40) {
+    padSelected = "atmospheric";
+    selectElement.value = "atmospheric";
+  } else if (note === 41) {
     padSelected = "flanger";
     selectElement.value = "flanger";
-  } else if (note === 41) {
+  } else if (note === 42) {
     padSelected = "soft";
     selectElement.value = "soft";
-  } else if (note === 42) {
+  } else if (note === 43) {
     padSelected = "sinos";
     selectElement.value = "sinos";
   }
