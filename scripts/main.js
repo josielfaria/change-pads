@@ -43,9 +43,16 @@ function playAudio() {
 
   noteViewSelected.innerHTML = substituirSusPorHash(audioName);
 
+
+  let locationAux = "";
+  // Verifique se a página está hospedada no GitHub Pages
+  if (window.location.href === "https://josielfaria.github.io/change-pads/") {
+    locationAux = "/change-pads";
+  }
+  
   // Crie uma nova fonte de áudio
   var source = document.createElement("source");
-  source.src = `${window.location.origin}/assets/pads/${padSelected}/${audioName}.mp3`;
+  source.src = `${window.location.origin}${locationAux}/assets/pads/${padSelected}/${audioName}.mp3`;
   source.type = "audio/mpeg";
   audioElement.volume = 0;
 
