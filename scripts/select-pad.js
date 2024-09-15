@@ -1,5 +1,5 @@
 const selectElement = document.getElementById("selectPad");
-let padSelected = "flanger";
+let padSelected = "atmospheric";
 
 document.addEventListener("DOMContentLoaded", (event) => {
 

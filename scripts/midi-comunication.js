@@ -1,10 +1,12 @@
 const MIDI_COMMAND_OPTIONS = 176;
 const MIDI_COMMAND_NOTES_ON = 144;
-const MIDI_COMMAND_PADS_ON = 153;
+const MIDI_COMMAND_PADS_ON_LN = 153;
 const MIDI_COMMAND_PADS_TOGGLE = 185;
 
 function verificarMessageMidi(message) {
-  if (!START_WORSHIP) { return; }
+  if (!START_WORSHIP) {
+    return;
+  }
 
   const data = message.data;
   const command = data[0];
@@ -29,30 +31,58 @@ function verificarMessageMidi(message) {
     return;
   }
 
+  // BTN PLAY/STOP PAD TOGGLE
+  if (command === MIDI_COMMAND_PADS_TOGGLE && note === 36) {
+    if (velocity === 127) {
+      playAudio();
+    } else {
+      stopAudioSmoothly();
+    }
+    return;
+  }
+
+  // BTN CHANGE PAD
+  if (command === MIDI_COMMAND_PADS_ON_LN && note === 37) {
+    playAudio();
+    return;
+  }
+
   // BTN VOL
   if (command === MIDI_COMMAND_OPTIONS && note === 20) {
     setVolume(((velocity * 100) / 127).toFixed(0));
     return;
   }
 
+  if (command === MIDI_COMMAND_OPTIONS && note === 95) {
+    clearLog();
+    return;
+  }
+
   choosePad(command, note);
 
-  if (command === MIDI_COMMAND_PADS_TOGGLE && note === 39 && velocity === 127) {
+  if (command === MIDI_COMMAND_PADS_ON_LN && note === 39) {
     tudumtss();
+  }
+
+  if (command === MIDI_COMMAND_PADS_ON_LN && note === 0) {
+    psicologico();
   }
 }
 
 function choosePad(command, note) {
-  if (command !== MIDI_COMMAND_PADS_ON) {
+  if (command !== MIDI_COMMAND_PADS_ON_LN) {
     return;
   }
   if (note === 40) {
+    padSelected = "atmospheric";
+    selectElement.value = "atmospheric";
+  } else if (note === 41) {
     padSelected = "flanger";
     selectElement.value = "flanger";
-  } else if (note === 41) {
+  } else if (note === 42) {
     padSelected = "soft";
     selectElement.value = "soft";
-  } else if (note === 42) {
+  } else if (note === 43) {
     padSelected = "sinos";
     selectElement.value = "sinos";
   }
